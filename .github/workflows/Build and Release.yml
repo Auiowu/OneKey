@@ -22,29 +22,30 @@ jobs:
         pip install pyinstaller
     - name: Build with pyinstaller
       run: |
-        pyinstaller --onefile main.py
+        pyinstaller --onefile --name Onekey main.py
     - name: Create a tag
       id: create_tag
       run: |
+        # 获取当前时间作为标签名称
+        CURRENT_TIME=$(Get-Date -Format "yyyy-MM-dd-HH-mm-ss")
         echo "Creating a tag..."
-        # VERSION_TAG 是一个环境变量，需要在触发工作流时指定
-        echo "VERSION_TAG=$VERSION_TAG" >>$GITHUB_ENV
+        echo "TAG_NAME=$CURRENT_TIME" >>$GITHUB_ENV
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
       with:
-        tag_name: ${{ env.VERSION_TAG }}
-        release_name: Release ${{ env.VERSION_TAG }}
+        tag_name: ${{ env.TAG_NAME }}
+        release_name: Release ${{ env.TAG_NAME }}
         draft: false
         prerelease: false
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/main.exe
-        asset_name: main.exe
+        asset_path: ./dist/Onekey.exe
+        asset_name: Onekey.exe
         asset_content_type: application/octet-stream
