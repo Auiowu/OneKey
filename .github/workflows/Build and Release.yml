@@ -30,7 +30,7 @@ jobs:
 
     - name: 构建
       run: |
-        python -m nuitka --standalone --nofollow-imports --output-dir=dist --windows-disable-console --mingw64 --show-progress --file-version=0.0.1 --product-version=0.0.1 --icon=favicon.ico main.py
+        python -m nuitka --standalone --nofollow-imports --output-dir=dist --windows-disable-console --mingw64 --show-progress --file-version=0.0.1 --product-version=0.0.1 main.py
 
     - name: 重命名可执行文件
       run: |
