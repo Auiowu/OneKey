@@ -26,8 +26,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: 安装MinGW
-        uses: egor-tensin/setup-mingw@v2.1.0
+      - name: Install MinGW 12.2.0
+        uses: deevroman/setup-mingw@0.0.2
 
       - name: 打包EXE
         run: |
