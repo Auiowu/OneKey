@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest    #运行环境是Windows
+    runs-on: ubuntu-latest    #运行环境是最新版Ubuntu
     steps:
     - uses: actions/checkout@v2
 
@@ -23,25 +23,9 @@ jobs:
 
     - name: 安装 MinGW64
       run: |
-       @echo off
-        set PATH=%PATH%;C:\MinGW64\bin
-        if exist "%ProgramFiles%\Git\mingw64" (
-          echo "Updating Git's MinGW64..."
-          git config --global core.autocrlf input
-        ) else (
-          echo "Installing MinGW64..."
-          powershell -Command "iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/WinRb/Win32-OpenSSH/master/OpenSSH-Win64.msi'))"
-          echo "Installing MinGW64 via Chocolatey..."
-          choco install mingw64 -y
-        )
-        echo "Installed MinGW64 successfully."
-
-    - name: Test installation (optional)
-      run: |
-        @echo off
-        echo "Testing installation..."
-        g++ --version  # 使用g++ --version来检查MinGW64是否安装正确
-
+       sudo apt-get update
+       sudo apt-get install -y g++-mingw-w64-x86-64
+       
     - name: 安装 Nuitka
       run: 
         pip install nuitka
@@ -52,8 +36,8 @@ jobs:
 
     - name: 重命名可执行文件
       run: |
-        Rename-Item -Path "dist\main.exe" -NewName "OneKey.exe"
-
+        mv dist/main.exe dist/OneKey.exe
+        
     - name: 创建发布
       id: create_release
       uses: actions/create-release@v1
