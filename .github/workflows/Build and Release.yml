@@ -22,7 +22,7 @@ jobs:
     - name: 打包 EXE
       run: |
         pip install pyinstaller
-        pyinstaller --onefile main.py -n OneKey
+        pyinstaller --distpath=dist --windowed main.py -n OneKey
 
     - name: 创建 Release
       id: create_release
