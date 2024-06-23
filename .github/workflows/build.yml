@@ -9,7 +9,7 @@ on:
     branches: ["main"]
   workflow dispatch:
 
-jons:
+jobs:
   build:
     runs-on: windows-latest
     steps:
