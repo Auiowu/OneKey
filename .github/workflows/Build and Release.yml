@@ -1,51 +1,47 @@
 name: Build and Release
 
 on:
-  push:
-    tags:
-     - 'v*'
+  workflow_dispatch:  # 手动触发
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest  # 使用最新版的 Windows
+
     steps:
     - uses: actions/checkout@v2
-
-    - name: 安装Python 3.10
+    - name: Set up Python 3.10
       uses: actions/setup-python@v2
       with:
-        python-version: '3.10'
-
-    - name: 安装依赖
-      run: 
+        python-version: 3.10
+    - name: Install dependencies
+      run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-
-    - name: 打包 EXE
+    - name: Build with pyinstaller
       run: |
-        pip install pyinstaller
-        pyinstaller --distpath=dist --windowed main.py -n OneKey
-
+        pyinstaller --onefile main.py
+    - name: Create a tag
+      id: create_tag
+      run: |
+        echo "Creating a tag..."
+        # VERSION_TAG 是一个环境变量，需要在触发工作流时指定
+        echo "VERSION_TAG=$VERSION_TAG" >>$GITHUB_ENV
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref_name }}
-        release_name: Release ${{ github.ref_name }}
+        tag_name: ${{ env.VERSION_TAG }}
+        release_name: Release ${{ env.VERSION_TAG }}
         draft: false
         prerelease: false
-      outputs:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-
-
-    - name: 上传 Release
+    - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/OneKey.exe
-        asset_name: OneKey.exe
+        asset_path: ./dist/main.exe
+        asset_name: main.exe
         asset_content_type: application/octet-stream
