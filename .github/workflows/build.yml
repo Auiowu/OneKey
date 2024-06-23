@@ -26,7 +26,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Install MinGW 12.2.0
+      - name: 安装MinGW 12.2.0
         uses: deevroman/setup-mingw@0.0.2
 
       - name: 打包EXE
@@ -37,7 +37,6 @@ jobs:
       - name: 发布Release
         uses: softprops/action-gh-release@v2.0.6
         with:
-          body_path: ./publish/changeLog.md
           prerelease: false
           draft: false
           tag_name: 12.1
