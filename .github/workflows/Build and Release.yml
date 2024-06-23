@@ -30,7 +30,7 @@ jobs:
         $CURRENT_TIME = (Get-Date -Format "yyyy-MM-dd-HH-mm-ss")
         echo "Creating a tag..."
         # 设置环境变量 TAG_NAME
-        echo "TAG_NAME=$CURRENT_TIME" | Out-File -FilePath$env:GITHUB_ENV
+        echo "TAG_NAME=$CURRENT_TIME" | Out-File -FilePath "$env:GITHUB_ENV"
 
 
     - name: Create Release
