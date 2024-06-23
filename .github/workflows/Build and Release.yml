@@ -32,9 +32,13 @@ jobs:
       run: |
         python -m nuitka --standalone --nofollow-imports --output-dir=dist --windows-disable-console --mingw64 --show-progress --file-version=0.0.1 --product-version=0.0.1 main.py
 
+    -name: 检查Nuitka输出
+      run: |
+        ls -l dist
+        
     - name: 重命名可执行文件
       run: |
-        mv dist/main.exe dist/OneKey.exe
+        mv dist/main.exe dist/OneKey.exe || echo "Failed to rename main.exe to OneKey.exe"
 
     - name: 创建发布
       id: create_release
