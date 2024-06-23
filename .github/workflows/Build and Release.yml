@@ -27,9 +27,10 @@ jobs:
       id: create_tag
       run: |
         # 获取当前时间作为标签名称
-        CURRENT_TIME=Get-Date -Format "yyyy-MM-dd-HH-mm-ss"
+        $CURRENT_TIME = (Get-Date -Format "yyyy-MM-dd-HH-mm-ss")
         echo "Creating a tag..."
         echo "TAG_NAME=$CURRENT_TIME" >>$GITHUB_ENV
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
