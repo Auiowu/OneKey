@@ -19,28 +19,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: 安装 MinGW64
+    - name: 打包 EXE
       run: |
-        sudo apt-get update
-        sudo apt-get install -y g++-mingw-w64-x86-64
+        pip install pyinstaller
+        pyinstaller --onefile main.py -n OneKey
 
-    - name: 安装 Nuitka
-      run: 
-        pip install nuitka
-
-    - name: 构建
-      run: |
-        python -m nuitka --standalone --nofollow-imports --output-dir=dist --windows-disable-console --mingw64 --show-progress --file-version=0.0.1 --product-version=0.0.1 main.py
-
-    - name: 检查Nuitka输出
-      run: |
-        ls -l dist
-        
-    - name: 重命名可执行文件
-      run: |
-        mv dist/main.exe dist/OneKey.exe || echo "Failed to rename main.exe to OneKey.exe"
-
-    - name: 创建发布
+    - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
@@ -51,12 +35,12 @@ jobs:
         draft: false
         prerelease: false
 
-    - name: 上传发布
+    - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/main.build, ./dist/main.bin
+        asset_path: ./dist/OneKey.exe
         asset_name: OneKey.exe
         asset_content_type: application/octet-stream
