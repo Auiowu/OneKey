@@ -1,0 +1,47 @@
+name: Build
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          submodules: true
+
+      - name: 安装Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+
+      - name: 安装依赖
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 安装MinGW
+        uses: egor-tensin/setup-mingw@v2.2.0
+
+      - name: 打包EXE
+        run: |
+          pip install nuitka
+          nuitka --onefile --lto=no --report=report.xml --mingw64 --show-progress --show-memory --windows-icon-from-ico=favicon.ico main.py -n Onekey-${{ github.sha }}
+
+      - name: 发布Release
+        uses: softprops/action-gh-release@v2.0.6
+        with:
+          body_path: ./publish/changeLog.md
+          prerelease: false
+          draft: false
+          tag_name: 12.1
+          files: |
+            dist/Onekey-${{ github.sha }}.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
