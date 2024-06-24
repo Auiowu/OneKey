@@ -46,9 +46,9 @@ print('\033[1;32;40m | |_| | | | \  | | |___  | | \ \  | |___    / /\033[0m')
 print('\033[1;32;40m \_____/ |_|  \_| |_____| |_|  \_\ |_____|  /_/\033[0m')
 print(f'\033[1;31;40m欢迎使用, 春节将至, 现在是{date}\033[0m')
 print('\033[1;32;40m作者ikun\033[0m')
-'''print('\033[1;32;40m当前版本13.1\033[0m')
+print('\033[1;32;40m当前版本13.1\033[0m')
 print('\033[5;31;40m沧海吃老子饭还骂上老子了，光荣榜第一位\033[0m')
-print('\033[1;32;40m温馨提示：App ID可以在Steam商店页面或SteamDB找到\033[0m')'''
+print('\033[1;32;40m温馨提示：App ID可以在Steam商店页面或SteamDB找到\033[0m')
 
 default = {
     'github_persoal_token': '' ,
@@ -215,7 +215,7 @@ def main(app_id):
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-a', '--app-id')
-parser.add_argument('-r', '--repo', default='Auiowu/ManifestAutoUpdate')
+parser.add_argument('-r', '--repo', default='Onekey-Project/ManifestAutoUpdate-Cache')
 args = parser.parse_args()
 repo = args.repo
 if __name__ == '__main__':
