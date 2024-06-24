@@ -215,7 +215,7 @@ def main(app_id):
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-a', '--app-id')
-parser.add_argument('-r', '--repo', default='Onekey-Project/ManifestAutoUpdate-Cache')
+parser.add_argument('-r', '--repo', default='Auiowu/ManifestAutoUpdate')
 args = parser.parse_args()
 repo = args.repo
 if __name__ == '__main__':
